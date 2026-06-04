@@ -12,14 +12,6 @@ time.sleep(1)
 print("--- RPG COMPLETELY INTEGRATED SYSTEM ---")
 time.sleep(1)
 
-#enemy health * level  
-def spawn_enemy():
-    enemy = random.choice(enemies_pool).copy()
-    scale = 1 + (player_level * 0.05)
-    enemy['hp'] = int(enemy['max_hp'] * scale)
-    enemy['max_hp'] = enemy['hp']
-    return enemy
-
 # 1. VISUAL TERMINAL COLORS
 RED = "\033[91m"
 GREEN = "\033[92m"
@@ -29,6 +21,8 @@ MAGENTA = "\033[95m"
 CYAN = "\033[96m"
 RESET = "\033[0m"
 
+#ask for name
+name = input("enter your name here").upper()
 #Tutorial for players
 while True:
     print("Hi! welcome to my game in beta")
@@ -70,6 +64,7 @@ while True:
 # SAVE & LOAD FUNCTIONS (added here, before anything else)
 # -------------------------------------------------------
 def save_game(filename="savegame.json"):
+    filename = f"save_{name.lower()}.json"
     data = {
         "player_name": player_name,
         "chosen_class": chosen_class,
@@ -89,37 +84,20 @@ def save_game(filename="savegame.json"):
         "xp_needed": xp_needed,
         "gold_coins": gold_coins,
         "current_wave": current_wave,
-        "inventory": inventory
+        "inventory": inventory,
+        "mage_affinity": mage_affinity,
     }
     with open(filename, "w") as f:
         json.dump(data, f)
     print(f"{GREEN} Game saved!{RESET}")
 
-def load_game(filename="savegame.json"):
+def load_game(name):
+    filename = f"save_{name.lower()}.json"
     if not os.path.exists(filename):
         return None
     with open(filename, "r") as f:
         return json.load(f)
-
-# -------------------------------------------------------
-# 2. CHARACTER SELECTION PHASE
-# -------------------------------------------------------
-print(f"\n{CYAN}=========================================={RESET}")
-print(f"--- CHOOSE YOUR RECONSTRUCTED HERO ---")
-print(f"{CYAN}=========================================={RESET}")
-time.sleep(3)
-print(f"1) {RED}WARRIOR{RESET}      - Weapon: Iron Broadsword (x1.3 DMG) | High HP (150)")
-time.sleep(2)
-print(f"2) {BLUE}MAGE{RESET}         - Weapon: Enchanted Wand (x1.4 Spell DMG) | Huge MP (80)")
-time.sleep(2)
-print(f"3) {CYAN}ARCHER{RESET}       - Weapon: Recurve Bow (x1.2 DMG) | Normal Archer (20)")
-time.sleep(2)
-print(f"4) {YELLOW}ALL-ROUNDER{RESET}  - Weapon: Training Sword (x1.1 DMG) | Perfectly Balanced")
-time.sleep(2)
-print(f"5) {MAGENTA}GUARDIAN{RESET}     - Weapon: Spiked Shield (x1.0 DMG) | Huge HP & DEF (15)")
-time.sleep(2)
-print(f"6) {GREEN}LEPRECHAUN{RESET}     - Weapon: coin (x1.25 DMG) | Extreme LUCK (40)")
-time.sleep(2)
+    
 # -------------------------------------------------------
 # CHECK FOR SAVE FILE FIRST — before class selection
 # -------------------------------------------------------
@@ -150,9 +128,30 @@ if save_data:
         gold_coins        = save_data["gold_coins"]
         current_wave      = save_data["current_wave"]
         inventory         = save_data["inventory"]
+        mage_affinity     = save_data["mage_affinity"]
         print(f" Welcome back, {YELLOW}{player_name}{RESET}!")
     else:
         save_data = None  # Fall through to new game below
+
+# -------------------------------------------------------
+# 2. CHARACTER SELECTION PHASE
+# -------------------------------------------------------
+print(f"\n{CYAN}=========================================={RESET}")
+print(f"--- CHOOSE YOUR RECONSTRUCTED HERO ---")
+print(f"{CYAN}=========================================={RESET}")
+time.sleep(3)
+print(f"1) {RED}WARRIOR{RESET}      - Weapon: Iron Broadsword (x1.3 DMG) | High HP (150)")
+time.sleep(2)
+print(f"2) {BLUE}MAGE{RESET}         - Weapon: Enchanted Wand (x1.4 Spell DMG) | Huge MP (80)")
+time.sleep(2)
+print(f"3) {CYAN}ARCHER{RESET}       - Weapon: Recurve Bow (x1.2 DMG) | Normal Archer (20)")
+time.sleep(2)
+print(f"4) {YELLOW}ALL-ROUNDER{RESET}  - Weapon: Training Sword (x1.1 DMG) | Perfectly Balanced")
+time.sleep(2)
+print(f"5) {MAGENTA}GUARDIAN{RESET}     - Weapon: Spiked Shield (x1.0 DMG) | Huge HP & DEF (15)")
+time.sleep(2)
+print(f"6) {GREEN}LEPRECHAUN{RESET}     - Weapon: coin (x1.25 DMG) | Extreme LUCK (40)")
+time.sleep(2)
 
 # Only runs if there was no save file, or the player chose N
 if save_data is None:
@@ -164,6 +163,7 @@ if save_data is None:
             equipped_weapon, weapon_multiplier = "Iron Broadsword", 1.3
             phys_mult = 2.0
             spell_mult = 0.5
+            mage_affinity = None
             break
         elif class_choice == "2":
             chosen_class = "Mage"
@@ -171,13 +171,16 @@ if save_data is None:
             equipped_weapon, weapon_multiplier = "Enchanted Wand", 1.4
             phys_mult = 0.5
             spell_mult = 2.0
+            mage_affinity = random.choice(["Fire", "Water", "Wind", "Earth"])
+            print(f"{BLUE}Your magical affinity is: {mage_affinity}{RESET}")
             break
         elif class_choice == "3":
             chosen_class = "Archer"
             max_health, max_mana, base_damage, luck_stat, defence_stat = 90, 30, 20, 20, 3
             equipped_weapon, weapon_multiplier = "Recurve Bow", 1.2
             phys_mult = 1.0
-            spell_mult = 0.8  # Fixed typo: was spell_multi
+            spell_mult = 0.8
+            mage_affinity = None
             break
         elif class_choice == "4":
             chosen_class = "All-Rounder"
@@ -185,6 +188,7 @@ if save_data is None:
             equipped_weapon, weapon_multiplier = "Training Sword", 1.1
             phys_mult = 1.0
             spell_mult = 1.0
+            mage_affinity = None
             break
         elif class_choice == "5":
             chosen_class = "Guardian"
@@ -192,6 +196,7 @@ if save_data is None:
             equipped_weapon, weapon_multiplier = "Spiked Shield", 1.0
             phys_mult = 0.75
             spell_mult = 0.75
+            mage_affinity = None
             break
         elif class_choice == "6":
             chosen_class = "LEPRECHAUN"
@@ -199,6 +204,7 @@ if save_data is None:
             equipped_weapon, weapon_multiplier = "coin", 1.25
             phys_mult = 1.0
             spell_mult = 1.0
+            mage_affinity = None
             break
         else:
             print(" Invalid input! Please enter a number between 1 and 6.")
@@ -222,21 +228,30 @@ if save_data is None:
 loot_table = [
     {"name": "Godly Greatsword", "mult": 2.5, "rarity": "Legendary", "roll_needed": 95, "description": "A massive golden blade vibrating with celestial energy. It obliterates foes."},
     {"name": "Sharp Cutlass", "mult": 1.6, "rarity": "Rare", "roll_needed": 70, "description": "A curved pirate blade built for swift, slicing slashes."},
-    {"name": "Iron Sword", "mult": 1.3, "rarity": "Common", "roll_needed": 40, "description": "A heavy, reliable standard-issue sword forged by village blacksmiths."}
+    {"name": "Iron Sword", "mult": 1.3, "rarity": "Common", "roll_needed": 40, "description": "A heavy, reliable standard-issue sword forged by village blacksmiths."},
+    {"name": "Common potion", "rarity": "Medium-Rare", "roll_needed": 50, "desription": "A reliable potion"}
 ]
 
 # -------------------------------------------------------
 # 4. ENEMY DATABASE
 # -------------------------------------------------------
 enemies_pool = [
-    {"name": "Dragon", "hp": 95, "max_hp": 95, "dodge": 20, "weakness": "None", "resist": "Fire", "dmg_mult": 1.0},
+    {"name": "Dragon", "hp": 95, "max_hp": 95, "dodge": 20, "weakness": "Earth", "resist": "Fire", "dmg_mult": 1.0},
     {"name": "Phoenix (The Mythic Bird)", "hp": 90, "max_hp": 90, "dodge": 35, "weakness": "Water", "resist": "Wind/Fire", "dmg_mult": 1.0},
     {"name": "Fin (The Mighty Shark)", "hp": 100, "max_hp": 100, "dodge": 15, "weakness": "Wind/Fire", "resist": "Water", "dmg_mult": 1.0},
     {"name": "Goblin", "hp": 110, "max_hp": 110, "dodge": 10, "weakness": "fire", "resist": "wind", "dmg_mult": 1.0},
-    {"name": "ant", "hp": 60, "max_hp": 60, "dodge": 75, "weakness": "water", "resist": "wind", "dmg_mult": 1.0},
+    {"name": "ant", "hp": 60, "max_hp": 60, "dodge": 75, "weakness": "water", "resist": "wind/Earth", "dmg_mult": 1.0},
     {"name": "skeleton", "hp": 80, "max_hp": 80, "dodge": 20, "weakness": "Physical", "resist": "None", "dmg_mult": 1.0}
 ]
-elder_dragon_boss = {"name": "Elder Dragon (The Endgame Myth)", "hp":150, "max_hp": 150, "dodge": 25, "weakness": "Water", "resist": "Fire/Wind/Physical", "dmg_mult": 1.50}
+elder_dragon_boss = {"name": "Elder Dragon (The Endgame Myth)", "hp":150, "max_hp": 150, "dodge": 25, "weakness": "Water", "resist": "Fire/Wind/Physical/Earth", "dmg_mult": 1.50}
+
+#enemy health * level  
+def spawn_enemy():
+    enemy = random.choice(enemies_pool).copy()
+    scale = 1 + (player_level * 0.10)
+    enemy['hp'] = int(enemy['max_hp'] * scale)
+    enemy['max_hp'] = enemy['hp']
+    return enemy
 
 current_enemy = spawn_enemy() 
 
@@ -260,7 +275,7 @@ while True:
     print(f"  YOUR MP: {BLUE}{current_mana}/{max_mana}{RESET} | {CYAN} LUCK: {luck_stat}{RESET}")
     print(f" {MAGENTA}{current_enemy['name']}{RESET}: {get_health_bar(current_enemy['hp'], current_enemy['max_hp'])} ({current_enemy['hp']}/{current_enemy['max_hp']})")
     print(f"==========================================")
-    print("A = Strike | F = Fire | W = Water | V = Wind | M = Heal | R = Rest")
+    print("A = Strike | F = Fire | W = Water | V = Wind | E = Earth | M = Heal | R = Rest")
     print("I = View Inventory & Inspect Items | S = Save | C = Clear Screen | Q = Quit")
 
     action = input("Choose action: ").upper()
@@ -270,7 +285,7 @@ while True:
         break
 
     elif action == "S":
-        save_game()
+        save_game(name)
         continue
 
     elif action == "C":
@@ -303,6 +318,7 @@ while True:
         item_choice = input("Select an item number to inspect/use, or B to go back: ").upper()
         if item_choice == "B":
             continue
+    
         try:
             chosen_index = int(item_choice) - 1
             selected_item = inventory[chosen_index]
@@ -341,6 +357,8 @@ while True:
         spell_element, spell_cost = "Wind", 15
     elif action != "A":
         continue
+    elif action == "E":
+        spell_element, spell_cost = "Earth", 15
 
     if current_mana < spell_cost:
         print(f"{MAGENTA} Not enough mana!{RESET}")
@@ -357,9 +375,19 @@ while True:
         print(f"{RED} Struck back! Took {final_boss_damage} damage.{RESET}")
     else:
         # Damage Calculation
-        if spell_element in ["Fire", "Water", "Wind"]:
-            calculated_hit = int(base_damage * damage_multiplier * weapon_multiplier * spell_mult)
+        if spell_element in ["Fire", "Water", "Wind", "Earth"]:
+            if chosen_class == "mage" and spell_element == mage_affinity:
+                affinity_cost = 8
+                affinity_bonus = 1.5
+            if current_mana < affinity_cost:
+                print(f"{MAGENTA} Not enough mana!{RESET}")
+                continue
+            current_mana -= affinity_cost
+            calculated_hit = int(base_damage * damage_multiplier * weapon_multiplier * spell_mult * affinity_bonus)
+            print(f"{CYAN} Affinity spell! {RESET}")
         else:
+            calculated_hit = int(base_damage * damage_multiplier * weapon_multiplier * spell_mult)
+            
             if spell_element in current_enemy['resist']:
                 damage_multiplier = 0.5
             elif spell_element == current_enemy['weakness']:
@@ -450,4 +478,5 @@ while True:
             elif sc == "4": luck_stat += 5
             elif sc == "5": defence_stat += 5
             current_enemy = spawn_enemy()
-            continue 
+            continue
+            
