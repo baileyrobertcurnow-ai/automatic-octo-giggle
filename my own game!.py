@@ -231,7 +231,9 @@ if save_data is None:
             equipped_weapon, weapon_multiplier = "Coin", 1.25
             phys_mult = 1.0
             spell_mult = 1.0
-            mage_affinity = None
+            mage_affinity = random.choice(["Fire", "Water", "Wind", "Earth"])
+            print(f"{BLUE} Your magical affinity is: {mage_affinity}!{RESET}")
+            print(f"{BLUE} Your affinity spells cost less mana and hit harder!{RESET}")
             break
         else:
             print(" Invalid input! Please enter a number between 1 and 6.")
@@ -355,7 +357,7 @@ while True:
 
     elif action == "R":
         print(f"\n You take a long rest...")
-        current_mana = min(max_mana, current_mana + 20 + (player_level * 2))
+        current_mana = min(max_mana, current_mana + 20 + (player_level * 3))
         print(f" MP Restored!")
         continue
 
@@ -458,7 +460,7 @@ while True:
     # If dodged, the enemy counter-attacks for free.
     # -------------------------------------------------------
     enemy_dodge_chance = max(5, current_enemy['dodge'] - luck_stat)
-    if random.randint(1, 100) <= enemy_dodge_chance and spell_element == "Physical":
+    if random.randint(1, 100) <= enemy_dodge_chance:
         print(f"{MAGENTA} The enemy DODGED your attack! (Dodge rate: {enemy_dodge_chance}%){RESET}")
         raw_boss_damage = random.randint(15, 30)
         final_boss_damage = max(1, raw_boss_damage - defence_stat)
@@ -580,17 +582,21 @@ while True:
         # using the formula 100 * 1.25^(level-1) so it
         # takes increasingly more XP to level up each time.
         if xp >= xp_needed:
-            player_level += 1
-            xp -= xp_needed
-            xp_needed = int(100 * (1.25 ** (player_level - 1)))
-            print(f"\n{GREEN} LEVEL UP! You are now Level {player_level}!{RESET}")
-            print(f"Next level requires {GREEN}{xp_needed} XP{RESET}!")
-            print("Choose upgrade: 1=HP(+20) | 2=MP(+20) | 3=DMG(+5) | 4=LUCK(+5) | 5=DEF(+5)")
-            sc = input("Enter choice: ")
-            if sc == "1": max_health += 20; current_health = max_health
-            elif sc == "2": max_mana += 20; current_mana = max_mana
-            elif sc == "3": base_damage += 5
-            elif sc == "4": luck_stat += 5
-            elif sc == "5": defence_stat += 5
+            while True:
+                player_level += 1
+                xp -= xp_needed
+                xp_needed = int(100 * (1.25 ** (player_level - 1)))
+                print(f"\n{GREEN} LEVEL UP! You are now Level {player_level}!{RESET}")
+                print(f"Next level requires {GREEN}{xp_needed} XP{RESET}!")
+                print("Choose upgrade: 1=HP(+20) | 2=MP(+20) | 3=DMG(+5) | 4=LUCK(+5) | 5=DEF(+5)")
+                sc = input("Enter choice: ")
+                if sc == "1": max_health += 20; current_health = max_health
+                elif sc == "2": max_mana += 20; current_mana = max_mana
+                elif sc == "3": base_damage += 5
+                elif sc == "4": luck_stat += 5
+                elif sc == "5": defence_stat += 5
+                else:
+                    print("wrong thing try again!")
+                    continue
             # Spawn a fresh scaled enemy after levelling up
             current_enemy = spawn_enemy()
