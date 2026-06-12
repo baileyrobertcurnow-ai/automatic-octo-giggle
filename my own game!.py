@@ -161,9 +161,7 @@ if save_data:
 # Each class sets its own stats and multipliers.
 # mage_affinity is set to None for every non-Mage class
 # so the variable always exists regardless of class.
-# -------------------------------------------------------
-while True:
-    if load_choice == "N":         
+# -------------------------------------------------------        
         print(f"\n{CYAN}=========================================={RESET}")
         print(f"--- CHOOSE YOUR RECONSTRUCTED HERO ---")
         print(f"{CYAN}=========================================={RESET}")
@@ -180,9 +178,6 @@ while True:
         time.sleep(2)
         print(f"6) {GREEN}LEPRECHAUN{RESET}   - Weapon: Coin (x1.25 DMG) | Extreme LUCK (40)")
         time.sleep(2)
-        break
-    if load_choice =="Y":
-        break
 
 if save_data is None:
     while True:
@@ -507,10 +502,11 @@ while True:
 
         # Enemy counter-attacks only if still alive
         if current_enemy['hp'] > 0:
+            number = random.randint(1, 100)
             player_dodge_needed = max(5, current_enemy['dodge'] - luck_stat)
-            if random.randint(1, 100) <= player_dodge_needed:
+            if number <= player_dodge_needed:
                 print(f"You dodged their attack! You took no damage!")
-            if random.randint(1,100) >= player_dodge_needed:
+            if number >= player_dodge_needed:
                 raw_boss_damage = int(random.randint(15, 30) * current_enemy['dmg_mult'])
                 final_boss_damage = max(1, raw_boss_damage - defence_stat)
                 current_health -= final_boss_damage
@@ -554,6 +550,13 @@ while True:
         xp += earned_xp
         gold_coins += earned_gold
         print(f" Gained {GREEN}{earned_xp} XP{RESET} and {YELLOW}{earned_gold} Gold{RESET}!")
+        luck_roll = random.randint(1, 100) + luck_stat
+        for reward in loot_table:
+            if luck_roll >= reward["roll_needed"]:
+                print(f"{GREEN}LOOT DROP!{RESET} Found [{reward['rarity']}] {YELLOW}{reward['name']}{RESET}!")
+                inventory.append(reward["name"])
+                item_found = True
+                break
 
         # Boss gate — both conditions must be true at once
         if player_level >= 4 and current_wave >= 10:
@@ -566,24 +569,9 @@ while True:
             current_enemy = spawn_enemy()
             print(f" A wild {MAGENTA}{current_enemy['name']}{RESET} appeared!")
 
-        # Reset wave counter after wave 10
-        if current_wave >= 10:
+
+        if current_wave == 11:
             current_wave = 1
-
-        # Loot drop — luck increases the roll so higher luck
-        # means better chance of hitting the roll_needed threshold
-        luck_roll = random.randint(1, 100) + luck_stat
-        item_found = False
-        for reward in loot_table:
-            if luck_roll >= reward["roll_needed"]:
-                print(f"{GREEN}LOOT DROP!{RESET} Found [{reward['rarity']}] {YELLOW}{reward['name']}{RESET}!")
-                inventory.append(reward["name"])
-                item_found = True
-                break
-        if not item_found:
-            print(f"Loot drop: Found a {BLUE}Common Potion{RESET}!")
-            inventory.append("Common Potion")
-
         # Level up check — xp_needed grows each level
         # using the formula 100 * 1.25^(level-1) so it
         # takes increasingly more XP to level up each time.
