@@ -162,22 +162,27 @@ if save_data:
 # mage_affinity is set to None for every non-Mage class
 # so the variable always exists regardless of class.
 # -------------------------------------------------------
-print(f"\n{CYAN}=========================================={RESET}")
-print(f"--- CHOOSE YOUR RECONSTRUCTED HERO ---")
-print(f"{CYAN}=========================================={RESET}")
-time.sleep(3)
-print(f"1) {RED}WARRIOR{RESET}      - Weapon: Iron Broadsword (x1.3 DMG) | High HP (150)")
-time.sleep(2)
-print(f"2) {BLUE}MAGE{RESET}         - Weapon: Enchanted Wand (x1.4 Spell DMG) | Huge MP (80)")
-time.sleep(2)
-print(f"3) {CYAN}ARCHER{RESET}       - Weapon: Recurve Bow (x1.2 DMG) | High LUCK (20)")
-time.sleep(2)
-print(f"4) {YELLOW}ALL-ROUNDER{RESET}  - Weapon: Training Sword (x1.1 DMG) | Perfectly Balanced")
-time.sleep(2)
-print(f"5) {MAGENTA}GUARDIAN{RESET}     - Weapon: Spiked Shield (x1.0 DMG) | Huge HP & DEF (15)")
-time.sleep(2)
-print(f"6) {GREEN}LEPRECHAUN{RESET}   - Weapon: Coin (x1.25 DMG) | Extreme LUCK (40)")
-time.sleep(2)
+while True:
+    if load_choice == "N":         
+        print(f"\n{CYAN}=========================================={RESET}")
+        print(f"--- CHOOSE YOUR RECONSTRUCTED HERO ---")
+        print(f"{CYAN}=========================================={RESET}")
+        time.sleep(3)
+        print(f"1) {RED}WARRIOR{RESET}      - Weapon: Iron Broadsword (x1.3 DMG) | High HP (150)")
+        time.sleep(2)
+        print(f"2) {BLUE}MAGE{RESET}         - Weapon: Enchanted Wand (x1.4 Spell DMG) | Huge MP (80)")
+        time.sleep(2)
+        print(f"3) {CYAN}ARCHER{RESET}       - Weapon: Recurve Bow (x1.2 DMG) | High LUCK (20)")
+        time.sleep(2)
+        print(f"4) {YELLOW}ALL-ROUNDER{RESET}  - Weapon: Training Sword (x1.1 DMG) | Perfectly Balanced")
+        time.sleep(2)
+        print(f"5) {MAGENTA}GUARDIAN{RESET}     - Weapon: Spiked Shield (x1.0 DMG) | Huge HP & DEF (15)")
+        time.sleep(2)
+        print(f"6) {GREEN}LEPRECHAUN{RESET}   - Weapon: Coin (x1.25 DMG) | Extreme LUCK (40)")
+        time.sleep(2)
+        break
+    if load_choice =="Y":
+        break
 
 if save_data is None:
     while True:
@@ -259,12 +264,10 @@ if save_data is None:
 # after each victory to decide if the item drops.
 # -------------------------------------------------------
 loot_table = [
-    {"name": "Godly Greatsword", "mult": 2.5, "rarity": "Legendary", "roll_needed": 95,
-     "description": "A massive golden blade vibrating with celestial energy. It obliterates foes."},
-    {"name": "Sharp Cutlass", "mult": 1.6, "rarity": "Rare", "roll_needed": 70,
-     "description": "A curved pirate blade built for swift, slicing slashes."},
-    {"name": "Iron Sword", "mult": 1.3, "rarity": "Common", "roll_needed": 40,
-     "description": "A heavy, reliable standard-issue sword forged by village blacksmiths."}
+    {"name": "Godly Greatsword", "mult": 2.5, "rarity": "Legendary", "roll_needed": 95, "description": "A massive golden blade vibrating with celestial energy. It obliterates foes."},
+    {"name": "Sharp Cutlass", "mult": 1.6, "rarity": "Rare", "roll_needed": 70, "description": "A curved pirate blade built for swift, slicing slashes."},
+    {"name": "Iron Sword", "mult": 1.3, "rarity": "Common", "roll_needed": 40, "description": "A heavy, reliable standard-issue sword forged by village blacksmiths."},
+    {"name": "Common Potion", "rarity": "Common", "roll_needed": 50, "description": "A potion made by a trustworthy alcemist, a pity it was abandoned."}
 ]
 
 # -------------------------------------------------------
@@ -278,7 +281,7 @@ loot_table = [
 enemies_pool = [
     {"name": "Dragon",                "hp": 95,  "max_hp": 95,  "dodge": 20, "weakness": "Earth",     "resist": "Fire",      "dmg_mult": 1.0},
     {"name": "Phoenix (Mythic Bird)", "hp": 90,  "max_hp": 90,  "dodge": 35, "weakness": "Water",     "resist": "Wind/Fire", "dmg_mult": 1.0},
-    {"name": "Fin (Mighty Shark)",    "hp": 100, "max_hp": 100, "dodge": 15, "weakness": "Wind/Fire", "resist": "Water",     "dmg_mult": 1.0},
+    {"name": "Fin (Mighty Shark)",    "hp": 100, "max_hp": 100, "dodge": 15, "weakness": "Wind/Fire/Earth", "resist": "Water",     "dmg_mult": 1.0},
     {"name": "Goblin",                "hp": 110, "max_hp": 110, "dodge": 10, "weakness": "Fire",      "resist": "Wind",      "dmg_mult": 1.0},
     {"name": "Ant",                   "hp": 60,  "max_hp": 60,  "dodge": 75, "weakness": "Water",     "resist": "Wind/Earth","dmg_mult": 1.0},
     {"name": "Skeleton",              "hp": 80,  "max_hp": 80,  "dodge": 20, "weakness": "Physical",  "resist": "None",      "dmg_mult": 1.0}
@@ -455,7 +458,6 @@ while True:
 
     # -------------------------------------------------------
     # DODGE CHECK
-    # Only physical strikes can be dodged.
     # Luck reduces the enemy's dodge chance.
     # If dodged, the enemy counter-attacks for free.
     # -------------------------------------------------------
@@ -505,10 +507,14 @@ while True:
 
         # Enemy counter-attacks only if still alive
         if current_enemy['hp'] > 0:
-            raw_boss_damage = int(random.randint(15, 30) * current_enemy['dmg_mult'])
-            final_boss_damage = max(1, raw_boss_damage - defence_stat)
-            current_health -= final_boss_damage
-            print(f"{RED} {current_enemy['name']} counter-attacked! {raw_boss_damage} - {defence_stat} DEF = {final_boss_damage} damage.{RESET}")
+            player_dodge_needed = max(5, current_enemy['dodge'] - luck_stat)
+            if random.randint(1, 100) <= player_dodge_needed:
+                print(f"You dodged their attack! You took no damage!")
+            if random.randint(1,100) >= player_dodge_needed:
+                raw_boss_damage = int(random.randint(15, 30) * current_enemy['dmg_mult'])
+                final_boss_damage = max(1, raw_boss_damage - defence_stat)
+                current_health -= final_boss_damage
+                print(f"{RED} {current_enemy['name']} counter-attacked! {raw_boss_damage} - {defence_stat} DEF = {final_boss_damage} damage.{RESET}")
 
     # -------------------------------------------------------
     # GAME OVER CHECK
@@ -582,21 +588,18 @@ while True:
         # using the formula 100 * 1.25^(level-1) so it
         # takes increasingly more XP to level up each time.
         if xp >= xp_needed:
+            player_level += 1
+            xp -= xp_needed
+            xp_needed = int(100 * (1.25 ** (player_level - 1)))
             while True:
-                player_level += 1
-                xp -= xp_needed
-                xp_needed = int(100 * (1.25 ** (player_level - 1)))
                 print(f"\n{GREEN} LEVEL UP! You are now Level {player_level}!{RESET}")
                 print(f"Next level requires {GREEN}{xp_needed} XP{RESET}!")
                 print("Choose upgrade: 1=HP(+20) | 2=MP(+20) | 3=DMG(+5) | 4=LUCK(+5) | 5=DEF(+5)")
                 sc = input("Enter choice: ")
-                if sc == "1": max_health += 20; current_health = max_health
-                elif sc == "2": max_mana += 20; current_mana = max_mana
-                elif sc == "3": base_damage += 5
-                elif sc == "4": luck_stat += 5
-                elif sc == "5": defence_stat += 5
-                else:
-                    print("wrong thing try again!")
-                    continue
-            # Spawn a fresh scaled enemy after levelling up
-            current_enemy = spawn_enemy()
+                if sc == "1": max_health += 20; current_health = max_health; break
+                elif sc == "2": max_mana += 20; current_mana = max_mana; break
+                elif sc == "3": base_damage += 5; break
+                elif sc == "4": luck_stat += 5; break
+                elif sc == "5": defence_stat += 5; break
+                else: print("Wrong choice! Choose again!")
+        current_enemy = spawn_enemy()
