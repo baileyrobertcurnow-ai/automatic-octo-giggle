@@ -37,7 +37,7 @@ hi_name = input("Enter your name here: ").upper()
 # Keeps asking until the player picks C or S.
 # -------------------------------------------------------
 while True:
-    print(f"Hi! Welcome {hi_name} to my game in beta")
+    print(f"Hi! Welcome {hi_name} to my game!")
     time.sleep(2)
     print("This is the tutorial. Press C to continue or S to skip.")
     tutorial = input("Choose action: ").upper()
@@ -49,27 +49,27 @@ while True:
 
     if tutorial == "C":
         print("Thank you for choosing the tutorial!")
-        time.sleep(5)
+        time.sleep(3)
         print("This is how the console is laid out:")
         time.sleep(3)
         print("1. ==========================================")
         print(f"2. HERO: {CYAN}[name]{RESET} the {YELLOW}[class]{RESET} | Level [level]")
         print("3. ==========================================")
-        time.sleep(6)
+        time.sleep(3)
         print("4.   YOUR HP: [health bar] | DEF: [defence]")
         print("5.   YOUR MP: [mana] | LUCK: [luck]")
         print("6.   ENEMY: [health bar]")
         print("7. ==========================================")
-        time.sleep(9)
+        time.sleep(3)
         print("8. A=Strike | F=Fire | W=Water | V=Wind | E=Earth | M=Heal | R=Rest")
-        print("9. I=Inventory | S=Save | C=Clear | Q=Quit")
-        time.sleep(5)
+        print("9. I=Inventory | S=Save | C=Clear | Q=Quit | B=Statistics")
+        time.sleep(3)
         print("Some enemies have resistances and weaknesses — find them out yourself!")
         time.sleep(3)
         print("If you can't cast spells, you're out of MP — use R to rest.")
-        time.sleep(5)
+        time.sleep(3)
         print("Time to send you to the real world!")
-        time.sleep(5)
+        time.sleep(3)
         break
 
 # -------------------------------------------------------
@@ -102,7 +102,8 @@ def save_game(name):
         "xp_needed": xp_needed,
         "gold_coins": gold_coins,
         "current_wave": current_wave,
-        "inventory": inventory
+        "inventory": inventory,
+        "number_of_defeated_mobs": number_of_defeated_mobs
     }
     with open(filename, "w") as f:
         json.dump(data, f)
@@ -151,6 +152,7 @@ if save_data:
         gold_coins        = save_data["gold_coins"]
         current_wave      = save_data["current_wave"]
         inventory         = save_data["inventory"]
+        number_of_defeated_mobs = save_data["number_of_defeated_mobs"]
         print(f" Welcome back, {YELLOW}{player_name}{RESET}!")
     else:
         save_data = None  # Player said N, fall through to new game
@@ -162,33 +164,34 @@ if save_data:
 # mage_affinity is set to None for every non-Mage class
 # so the variable always exists regardless of class.
 # -------------------------------------------------------        
-        print(f"\n{CYAN}=========================================={RESET}")
-        print(f"--- CHOOSE YOUR RECONSTRUCTED HERO ---")
-        print(f"{CYAN}=========================================={RESET}")
-        time.sleep(3)
-        print(f"1) {RED}WARRIOR{RESET}      - Weapon: Iron Broadsword (x1.3 DMG) | High HP (150)")
-        time.sleep(2)
-        print(f"2) {BLUE}MAGE{RESET}         - Weapon: Enchanted Wand (x1.4 Spell DMG) | Huge MP (80)")
-        time.sleep(2)
-        print(f"3) {CYAN}ARCHER{RESET}       - Weapon: Recurve Bow (x1.2 DMG) | High LUCK (20)")
-        time.sleep(2)
-        print(f"4) {YELLOW}ALL-ROUNDER{RESET}  - Weapon: Training Sword (x1.1 DMG) | Perfectly Balanced")
-        time.sleep(2)
-        print(f"5) {MAGENTA}GUARDIAN{RESET}     - Weapon: Spiked Shield (x1.0 DMG) | Huge HP & DEF (15)")
-        time.sleep(2)
-        print(f"6) {GREEN}LEPRECHAUN{RESET}   - Weapon: Coin (x1.25 DMG) | Extreme LUCK (40)")
-        time.sleep(2)
-
-if save_data is None:
+if save_data == None or load_choice == "N":
+    print(f"\n{CYAN}=========================================={RESET}")
+    print(f"--- CHOOSE YOUR RECONSTRUCTED HERO ---")
+    print(f"{CYAN}=========================================={RESET}")
+    time.sleep(3)
+    print(f"1) {RED}WARRIOR{RESET}      - Weapon: Iron Broadsword (x1.3 DMG) | High HP (150)")
+    time.sleep(2)
+    print(f"2) {BLUE}MAGE{RESET}         - Weapon: Enchanted Wand (x1.4 Spell DMG) | Huge MP (80)")
+    time.sleep(2)
+    print(f"3) {CYAN}ARCHER{RESET}       - Weapon: Recurve Bow (x1.2 DMG) | High LUCK (20)")
+    time.sleep(2)
+    print(f"4) {YELLOW}ALL-ROUNDER{RESET}  - Weapon: Training Sword (x1.1 DMG) | Perfectly Balanced")
+    time.sleep(2)
+    print(f"5) {MAGENTA}GUARDIAN{RESET}     - Weapon: Spiked Shield (x1.0 DMG) | Huge HP & DEF (15)")
+    time.sleep(2)
+    print(f"6) {GREEN}LEPRECHAUN{RESET}   - Weapon: Coin (x1.25 DMG) | Extreme LUCK (40)")
+    time.sleep(2)
+    print(f"7) {CYAN}PRIEST{RESET}       - Weapon: Holy Tome (x1.25 DMG) | Healing Affinity")
+    time.sleep(2)
     while True:
-        class_choice = input("\nEnter your choice number (1-6): ")
+        class_choice = input("\nEnter your choice number (1-7): ")
         if class_choice == "1":
             chosen_class = "Warrior"
             max_health, max_mana, base_damage, luck_stat, defence_stat = 150, 10, 30, 3, 5
             equipped_weapon, weapon_multiplier = "Iron Broadsword", 1.3
             phys_mult = 2.0      # Warriors hit hard physically
             spell_mult = 0.5     # Warriors are weak at spells
-            mage_affinity = None # Only Mages have an affinity
+            mage_affinity = None # Only Mages, Leprechauns and Priests have an affinity
             break
         elif class_choice == "2":
             chosen_class = "Mage"
@@ -197,7 +200,7 @@ if save_data is None:
             phys_mult = 0.5      # Mages hit weak physically
             spell_mult = 2.0     # Mages hit hard with spells
             # Randomly pick one element as the Mage's specialty
-            mage_affinity = random.choice(["Fire", "Water", "Wind", "Earth"])
+            mage_affinity = random.choice(["Fire", "Water", "Wind", "Earth, Healing"])
             print(f"{BLUE} Your magical affinity is: {mage_affinity}!{RESET}")
             print(f"{BLUE} Your affinity spells cost less mana and hit harder!{RESET}")
             break
@@ -231,12 +234,22 @@ if save_data is None:
             equipped_weapon, weapon_multiplier = "Coin", 1.25
             phys_mult = 1.0
             spell_mult = 1.0
-            mage_affinity = random.choice(["Fire", "Water", "Wind", "Earth"])
+            mage_affinity = random.choice(["Fire", "Water", "Wind", "Earth, Healing"])
             print(f"{BLUE} Your magical affinity is: {mage_affinity}!{RESET}")
             print(f"{BLUE} Your affinity spells cost less mana and hit harder!{RESET}")
             break
+        elif class_choice == "7":
+            chosen_class = "Priest"
+            max_health, max_mana, base_damage, luck_stat, defence_stat = 80, 100, 8, 10, 0
+            equipped_weapon, weapon_multiplier = "Holy Tome", 1.25
+            phys_mult = 0.5      # Priests are weak physically
+            spell_mult = 1.2     # Decent at spells
+            mage_affinity = "Healing"  # Fixed affinity — always Healing
+            print(f"{BLUE} Your affinity is: Healing!{RESET}")
+            print(f"{BLUE} Your healing spells cost less mana and restore more HP!{RESET}")
+            break
         else:
-            print(" Invalid input! Please enter a number between 1 and 6.")
+            print(" Invalid input! Please enter a number between 1 and 7.")
 
     # Initialize all tracking variables for a fresh game
     current_health = max_health
@@ -247,6 +260,7 @@ if save_data is None:
     gold_coins = 50
     current_wave = 1
     inventory = ["Common Potion"]
+    number_of_defeated_mobs = 0
 
     print(f"\n You spawn into the world as a {YELLOW}{chosen_class}{RESET} wielding a {YELLOW}{equipped_weapon}{RESET}!")
     player_name = input("Enter your character's name: ")
@@ -261,8 +275,7 @@ if save_data is None:
 loot_table = [
     {"name": "Godly Greatsword", "mult": 2.5, "rarity": "Legendary", "roll_needed": 95, "description": "A massive golden blade vibrating with celestial energy. It obliterates foes."},
     {"name": "Sharp Cutlass", "mult": 1.6, "rarity": "Rare", "roll_needed": 70, "description": "A curved pirate blade built for swift, slicing slashes."},
-    {"name": "Iron Sword", "mult": 1.3, "rarity": "Common", "roll_needed": 40, "description": "A heavy, reliable standard-issue sword forged by village blacksmiths."},
-    {"name": "Common Potion", "rarity": "Common", "roll_needed": 50, "description": "A potion made by a trustworthy alcemist, a pity it was abandoned."}
+    {"name": "Iron Sword", "mult": 1.3, "rarity": "Common", "roll_needed": 40, "description": "A heavy, reliable standard-issue sword forged by village blacksmiths."}
 ]
 
 # -------------------------------------------------------
@@ -326,7 +339,7 @@ while True:
     # of each turn so the player always knows their state.
     print(f"\n==========================================")
     print(f"HERO: {CYAN}{player_name}{RESET} the {YELLOW}{chosen_class}{RESET} | Level {player_level}")
-    print(f"XP: {xp}/{xp_needed} | {YELLOW}GOLD: {gold_coins}{RESET} | {MAGENTA}WAVE: {current_wave}{RESET}")
+    print(f"XP: {xp}/{xp_needed} | {YELLOW}GOLD: {gold_coins}{RESET} | {MAGENTA}FLOOR: {current_wave}{RESET}")                        
     if mage_affinity:
         print(f"{BLUE}Affinity: {mage_affinity}{RESET}")
     print(f"==========================================")
@@ -335,7 +348,7 @@ while True:
     print(f"  {MAGENTA}{current_enemy['name']}{RESET}: {get_health_bar(current_enemy['hp'], current_enemy['max_hp'])} ({current_enemy['hp']}/{current_enemy['max_hp']})")
     print(f"==========================================")
     print("A=Strike | F=Fire | W=Water | V=Wind | E=Earth | M=Heal | R=Rest")
-    print("I=Inventory | S=Save | C=Clear | Q=Quit")
+    print("I=Inventory | S=Save | C=Clear | Q=Quit | B=Statistics")
 
     action = input("Choose action: ").upper()
 
@@ -346,6 +359,31 @@ while True:
 
     elif action == "S":
         save_game(profile_name)
+        continue
+    elif action == "B":
+        print(f"\n{CYAN}========== STATISTICS =========={RESET}")
+        print(f"  Name:       {YELLOW}{player_name}{RESET}")
+        print(f"  Class:      {YELLOW}{chosen_class}{RESET}")
+        print(f"  Level:      {GREEN}{player_level}{RESET}")
+        print(f"  Wave:       {MAGENTA}{current_wave}{RESET}")
+        print(f"  XP:         {xp}/{xp_needed}")
+        print(f"  Gold:       {YELLOW}{gold_coins}{RESET}")
+        print(f"==========================================")
+        time.sleep(3)
+        print(f"  Max HP:     {RED}{max_health}{RESET}")
+        print(f"  Max MP:     {BLUE}{max_mana}{RESET}")
+        print(f"  Base DMG:   {YELLOW}{base_damage}{RESET}")
+        print(f"  Weapon:     {equipped_weapon} (x{weapon_multiplier})")
+        print(f"  Phys Mult:  x{phys_mult}")
+        print(f"  Spell Mult: x{spell_mult}")
+        time.sleep(3)
+        print(f"  Defence:    {BLUE}{defence_stat}{RESET}")
+        print(f"  Luck:       {CYAN}{luck_stat}{RESET}")
+        if mage_affinity:
+            print(f"  Affinity:   {BLUE}{mage_affinity}{RESET}")
+        print(f"  Monsters defeated: {RED}{number_of_defeated_mobs}")
+        print(f"{CYAN}================================{RESET}")
+        input("Press Enter to continue...")
         continue
 
     elif action == "C":
@@ -360,12 +398,26 @@ while True:
         continue
 
     elif action == "M":
-        if current_mana >= 15:
-            current_mana -= 15
-            current_health = min(max_health, current_health + 30 + (player_level * 5))
-            print(f" Restored health using magic!")
+        if mage_affinity == "Healing":
+            # Healing affinity — cheaper cost and more HP restored
+            heal_cost = 8
+            heal_amount = 50 + (player_level * 8)
+            if current_mana >= heal_cost:
+                current_mana -= heal_cost
+                current_health = min(max_health, current_health + heal_amount)
+                print(f"{CYAN} Affinity heal! Restored {heal_amount} HP!{RESET}")
+            else:
+                print(f"{MAGENTA} Not enough mana!{RESET}")
         else:
-            print(f"{MAGENTA} Out of Mana!{RESET}")
+            # Normal heal for everyone else
+            heal_cost = 15
+            heal_amount = 30 + (player_level * 5)
+            if current_mana >= heal_cost:
+                current_mana -= heal_cost
+                current_health = min(max_health, current_health + heal_amount)
+                print(f" Restored {heal_amount} HP using magic!")
+            else:
+                print(f"{MAGENTA} Out of Mana!{RESET}")
         continue
 
     elif action == "I":
@@ -401,7 +453,7 @@ while True:
                             weapon_multiplier = weapon["mult"]
                             inventory.pop(chosen_index)
                             print(f" Equipped {YELLOW}{equipped_weapon}{RESET}!")
-                        break
+                            break
         except:
             print(" Invalid selection!")
         continue
@@ -501,12 +553,13 @@ while True:
         print(f" You dealt {YELLOW}{calculated_hit} damage{RESET} to {current_enemy['name']}!")
 
         # Enemy counter-attacks only if still alive
+        # Player can now dodge
         if current_enemy['hp'] > 0:
             number = random.randint(1, 100)
             player_dodge_needed = max(5, current_enemy['dodge'] - luck_stat)
             if number <= player_dodge_needed:
                 print(f"You dodged their attack! You took no damage!")
-            if number >= player_dodge_needed:
+            elif number >= player_dodge_needed:
                 raw_boss_damage = int(random.randint(15, 30) * current_enemy['dmg_mult'])
                 final_boss_damage = max(1, raw_boss_damage - defence_stat)
                 current_health -= final_boss_damage
@@ -520,6 +573,8 @@ while True:
     # -------------------------------------------------------
     if current_health <= 0:
         print(f"\n{RED}--- YOU FAINTED! ---{RESET}")
+        print(f"\n{RED}--- YOU FIND YOURSELF AT THE START OF THE DUNGEON AGAIN! ---{RESET}")
+        current_wave = 1
         if gold_coins > 0:
             gold_lost = max(1, int(gold_coins * 0.05))
             gold_coins -= gold_lost
@@ -534,7 +589,7 @@ while True:
         current_enemy = spawn_enemy()
         continue
 
-    # -------------------------------------------------------
+# -------------------------------------------------------
     # VICTORY CHECK
     # If the enemy's HP hits 0 or below, the player wins.
     # Wave increments, XP and gold are awarded, then either
@@ -547,34 +602,37 @@ while True:
 
         earned_xp = random.randint(40, 70)
         earned_gold = random.randint(15, 30)
+        number_of_defeated_mobs += 1
         xp += earned_xp
         gold_coins += earned_gold
         print(f" Gained {GREEN}{earned_xp} XP{RESET} and {YELLOW}{earned_gold} Gold{RESET}!")
+
+        # Loot drop
         luck_roll = random.randint(1, 100) + luck_stat
+        item_found = False
         for reward in loot_table:
             if luck_roll >= reward["roll_needed"]:
                 print(f"{GREEN}LOOT DROP!{RESET} Found [{reward['rarity']}] {YELLOW}{reward['name']}{RESET}!")
                 inventory.append(reward["name"])
                 item_found = True
                 break
+        if not item_found:
+            print(f"Loot drop: Found a {BLUE}Common Potion{RESET}!")
+            inventory.append("Common Potion")
 
         # Boss gate — both conditions must be true at once
         if player_level >= 4 and current_wave >= 10:
-            print(f"\n{RED} WARNING: WAVE 10 BOSS ENCOUNTER!{RESET}")
-            print(f"{RED}THE GROUND TREMORS AS THE SKY SPLITS OPEN...{RESET}")
+            print(f"\n{RED} WARNING: THE GROUND TREMORS AS THE SKY SPLITS OPEN...{RESET}")
+            print(f"{RED}THE ELDER DRAGON HAS ARRIVED TO END YOUR RUN!{RESET}")
             current_enemy = elder_dragon_boss.copy()
             print(f"The legendary {RED}{current_enemy['name']}{RESET} has arrived!")
             time.sleep(2)
+            current_wave = 1
         else:
             current_enemy = spawn_enemy()
             print(f" A wild {MAGENTA}{current_enemy['name']}{RESET} appeared!")
 
-
-        if current_wave == 11:
-            current_wave = 1
-        # Level up check — xp_needed grows each level
-        # using the formula 100 * 1.25^(level-1) so it
-        # takes increasingly more XP to level up each time.
+        # Level up check
         if xp >= xp_needed:
             player_level += 1
             xp -= xp_needed
@@ -590,4 +648,3 @@ while True:
                 elif sc == "4": luck_stat += 5; break
                 elif sc == "5": defence_stat += 5; break
                 else: print("Wrong choice! Choose again!")
-        current_enemy = spawn_enemy()
