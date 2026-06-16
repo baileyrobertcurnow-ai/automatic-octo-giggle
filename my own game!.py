@@ -152,7 +152,7 @@ if save_data:
         gold_coins        = save_data["gold_coins"]
         current_wave      = save_data["current_wave"]
         inventory         = save_data["inventory"]
-        number_of_defeated_mobs = save_data["number_of_defeated_mobs"]
+        number_of_defeated_mobs = save_data.get("number_of_defeated_mobs", 0)
         print(f" Welcome back, {YELLOW}{player_name}{RESET}!")
     else:
         save_data = None  # Player said N, fall through to new game
@@ -164,7 +164,7 @@ if save_data:
 # mage_affinity is set to None for every non-Mage class
 # so the variable always exists regardless of class.
 # -------------------------------------------------------        
-if save_data == None or load_choice == "N":
+if save_data is None:
     print(f"\n{CYAN}=========================================={RESET}")
     print(f"--- CHOOSE YOUR RECONSTRUCTED HERO ---")
     print(f"{CYAN}=========================================={RESET}")
@@ -200,7 +200,7 @@ if save_data == None or load_choice == "N":
             phys_mult = 0.5      # Mages hit weak physically
             spell_mult = 2.0     # Mages hit hard with spells
             # Randomly pick one element as the Mage's specialty
-            mage_affinity = random.choice(["Fire", "Water", "Wind", "Earth, Healing"])
+            mage_affinity = random.choice(["Fire", "Water", "Wind", "Earth", "Healing"])
             print(f"{BLUE} Your magical affinity is: {mage_affinity}!{RESET}")
             print(f"{BLUE} Your affinity spells cost less mana and hit harder!{RESET}")
             break
@@ -234,7 +234,7 @@ if save_data == None or load_choice == "N":
             equipped_weapon, weapon_multiplier = "Coin", 1.25
             phys_mult = 1.0
             spell_mult = 1.0
-            mage_affinity = random.choice(["Fire", "Water", "Wind", "Earth, Healing"])
+            mage_affinity = random.choice(["Fire", "Water", "Wind", "Earth", "Healing"])
             print(f"{BLUE} Your magical affinity is: {mage_affinity}!{RESET}")
             print(f"{BLUE} Your affinity spells cost less mana and hit harder!{RESET}")
             break
@@ -287,17 +287,31 @@ loot_table = [
 # "Wind/Fire" correctly matches both Wind and Fire.
 # -------------------------------------------------------
 enemies_pool = [
-    {"name": "Dragon",                "hp": 95,  "max_hp": 95,  "dodge": 20, "weakness": "Earth",     "resist": "Fire",      "dmg_mult": 1.0},
+    {"name": "Dragon",                "hp": 95,  "max_hp": 95,  "dodge": 20, "weakness": "",     "resist": "Fire/Physical",      "dmg_mult": 1.0},
     {"name": "Phoenix (Mythic Bird)", "hp": 90,  "max_hp": 90,  "dodge": 35, "weakness": "Water",     "resist": "Wind/Fire", "dmg_mult": 1.0},
     {"name": "Fin (Mighty Shark)",    "hp": 100, "max_hp": 100, "dodge": 15, "weakness": "Wind/Fire/Earth", "resist": "Water",     "dmg_mult": 1.0},
-    {"name": "Goblin",                "hp": 110, "max_hp": 110, "dodge": 10, "weakness": "Fire",      "resist": "Wind",      "dmg_mult": 1.0},
-    {"name": "Ant",                   "hp": 60,  "max_hp": 60,  "dodge": 75, "weakness": "Water",     "resist": "Wind/Earth","dmg_mult": 1.0},
-    {"name": "Skeleton",              "hp": 80,  "max_hp": 80,  "dodge": 20, "weakness": "Physical",  "resist": "None",      "dmg_mult": 1.0}
+    {"name": "Goblin Grunt",          "hp": 110, "max_hp": 110, "dodge": 10, "weakness": "Fire",      "resist": "Wind",      "dmg_mult": 1.0},
+    {"name": "Ant",                   "hp": 50,  "max_hp": 50,  "dodge": 75, "weakness": "Water",     "resist": "Wind/Earth","dmg_mult": 1.0},
+    {"name": "Skeleton",              "hp": 80,  "max_hp": 80,  "dodge": 20, "weakness": "Physical",  "resist": "",      "dmg_mult": 1.0},
+    {"name": "Goblin Archer",         "hp": 80,  "max_hp": 80,  "dodge": 45, "weakness": "Fire",      "resist": "",      "dmg_mult": 1.0},
+    {"name": "Goblin General",        "hp": 130, "max_hp": 130, "dodge": 5,  "weakness": "",          "resist": "Physical/Wind/Earth",      "dmg_mult": 2.0},
+    {"name": "Goblin King",           "hp": 150, "max_hp": 150, "dodge": 0,  "weakness": "",          "resist": "Physical/Wind/Earth",      "dmg_mult": 2.25},
+    {"name": "Arch Skeleton",         "hp": 120, "max_hp": 120, "dodge": 20, "weakness": "Physical",  "resist": "",      "dmg_mult": 1.25},
+    {"name": "Water Drake",           "hp": 80,  "max_hp": 80,  "dodge": 40, "weakness": "Fire",      "resist": "Water", "dmg_mult": 1.0},
+    {"name": "Wyvern",                "hp": 125, "max_hp": 125, "dodge": 50, "weakness": "Earth",     "resist": "Wind",  "dmg_mult": 1.0},
+    {"name": "Fire Drake",            "hp": 80,  "max_hp": 80,  "dodge": 40, "weakness": "Water",     "resist": "Fire",  "dmg_mult": 1.0},
+    {"name": "Earth Drake",           "hp": 80,  "max_hp": 80,  "dodge": 25, "weakness": "Water",     "resist": "Earth", "dmg_mult": 1.0},
+    {"name": "Drake",                 "hp": 90,  "max_hp": 90,  "dodge": 20, "weakness": "",          "resist": "Physical", "dmg_mult": 1.0},
+    {"name": "Water Dragon",          "hp": 95,  "max_hp": 95,  "dodge": 20, "weakness": "Fire",      "resist": "Water", "dmg_mult": 1.0},
+    {"name": "Fire Dragon",           "hp": 95,  "max_hp": 95,  "dodge": 20, "weakness": "Water",     "resist": "Fire",  "dmg_mult": 1.0},
+    {"name": "Earth Dragon",          "hp": 95,  "max_hp": 95,  "dodge": 15, "weakness": "Water",     "resist": "Earth", "dmg_mult": 1.0},
+    {"name": "Megalodon",             "hp": 120, "max_hp": 120, "dodge": 1,  "weakness": "Wind/Earth/Fire", "resist": "Water", "dmg_mult": 1.299},
+    {"name": "Baby Phoenix",          "hp": 50,  "max_hp": 50,  "dodge": 50, "weakness": "Water",     "resist": "Fire/Wind",   "dmg_mult": 1.0}
 ]
 elder_dragon_boss = {
     "name": "Elder Dragon (The Endgame Myth)",
-    "hp": 150, "max_hp": 150, "dodge": 25,
-    "weakness": "Water", "resist": "Fire/Wind/Physical/Earth", "dmg_mult": 1.50
+    "hp": 300, "max_hp": 300, "dodge": 25,
+    "weakness": "", "resist": "Fire/Wind/Physical/Earth/Water", "dmg_mult": 1.50
 }
 
 # -------------------------------------------------------
@@ -360,6 +374,7 @@ while True:
     elif action == "S":
         save_game(profile_name)
         continue
+
     elif action == "B":
         print(f"\n{CYAN}========== STATISTICS =========={RESET}")
         print(f"  Name:       {YELLOW}{player_name}{RESET}")
@@ -523,7 +538,7 @@ while True:
         # Physical strikes use phys_mult instead of spell_mult.
         # Weakness doubles damage, resistance halves it.
         # -------------------------------------------------------
-        if spell_element in ["Fire", "Water", "Wind", "Earth"]:
+        if spell_element in ("Fire", "Water", "Wind", "Earth"):
             # Check weakness and resistance first
             if spell_element in current_enemy['resist']:
                 damage_multiplier = 0.5
