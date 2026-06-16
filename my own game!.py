@@ -306,12 +306,16 @@ enemies_pool = [
     {"name": "Fire Dragon",           "hp": 95,  "max_hp": 95,  "dodge": 20, "weakness": "Water",     "resist": "Fire",  "dmg_mult": 1.0},
     {"name": "Earth Dragon",          "hp": 95,  "max_hp": 95,  "dodge": 15, "weakness": "Water",     "resist": "Earth", "dmg_mult": 1.0},
     {"name": "Megalodon",             "hp": 120, "max_hp": 120, "dodge": 1,  "weakness": "Wind/Earth/Fire", "resist": "Water", "dmg_mult": 1.299},
-    {"name": "Baby Phoenix",          "hp": 50,  "max_hp": 50,  "dodge": 50, "weakness": "Water",     "resist": "Fire/Wind",   "dmg_mult": 1.0}
+    {"name": "Baby Phoenix",          "hp": 50,  "max_hp": 50,  "dodge": 50, "weakness": "Water",     "resist": "Fire/Wind",   "dmg_mult": 1.0},
+    {"name": "Giant Ant",             "hp": 90,  "max_hp": 90,  "dodge": 40, "weakness": "Water",     "resist": "Earth",  "dmg_mult": 1.15},
+    {"name": "Worker Ant",            "hp": 75,  "max_hp": 75,  "dodge": 80, "weakness": "Water",     "resist": "Earth",  "dmg_mult": 1.15},
+    {"name": "Soldier Ant",           "hp": 100, "max_hp": 100, "dodge": 60, "weakness": "Water",     "resist": "Earth",  "dmg_mult": 1.30},
+    {"name": "Grim Reaper",           "hp": 120, "max_hp": 100, "dodge": 15, "weakness": "",          "resist": "Physical/Earth/Fire", "dmg_mult": 1.50}
 ]
 elder_dragon_boss = {
     "name": "Elder Dragon (The Endgame Myth)",
     "hp": 300, "max_hp": 300, "dodge": 25,
-    "weakness": "", "resist": "Fire/Wind/Physical/Earth/Water", "dmg_mult": 1.50
+    "weakness": "", "resist": "Fire/Wind/Physical/Earth/Water", "dmg_mult": 1.75
 }
 
 # -------------------------------------------------------
