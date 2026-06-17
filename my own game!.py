@@ -274,6 +274,7 @@ if save_data is None:
 # -------------------------------------------------------
 if chosen_class == "Warrior":
     loot_table = [
+        {"name": "Sword For The Gods", "mult": 5.0, "rarity": "Ultimate", "roll_needed": 999, "description": "Attacks five times as heavy."},
         {"name": "Godly Greatsword", "mult": 2.5, "rarity": "Legendary", "roll_needed": 95, "description": "A massive golden blade vibrating with celestial energy. It obliterates foes."},
         {"name": "Sharp Cutlass", "mult": 1.6, "rarity": "Rare", "roll_needed": 70, "description": "A curved pirate blade built for swift, slicing slashes."},
         {"name": "Iron Sword", "mult": 1.3, "rarity": "Common", "roll_needed": 40, "description": "A heavy, reliable standard-issue sword forged by village blacksmiths."}
@@ -281,6 +282,7 @@ if chosen_class == "Warrior":
 
 elif chosen_class == "Mage":
     loot_table = [
+        {"name": "Heavenly Staff", "mult": 5.0, "rarity": "Ultimate", "roll_needed": 999, "description": "Attacks five times at once."},
         {"name": "Holy Staff", "mult": 2.5, "rarity": "Legendary", "roll_needed": 95, "description": "A powerful, tall staff cut and enchanted by skilled, royal carpentors and enchanters."},
         {"name": "Enchanted Wand", "mult": 1.6, "rarity": "Rare", "roll_needed": 70, "description": "A chiseled wand built by skilled dwarven carpentors and elven enchanters."},
         {"name": "Wood Wand", "mult": 1.3, "rarity": "Common", "roll_needed": 40, "description": "A lightweight, reliable standard-issue wand crafted by village carpentors and enchanters,"}
@@ -288,6 +290,7 @@ elif chosen_class == "Mage":
 
 elif chosen_class == "Archer":
     loot_table = [  
+        {"name": "Ultimate Bow", "mult": 5.0, "rarity": "Ultimate", "roll_needed": 999, "description": "Shoots five times at once."},
         {"name": "Light-Speed Crossbow", "mult": 2.5, "rarity": "Legendary", "roll_needed": 95, "description": "A small, light-weight, fast shooting crossbow fit for gods."},
         {"name": "Enchanted Bow", "mult": 1.6, "rarity": "Rare", "roll_needed": 70, "description": "A big, enchanted bow made by powerful enchanters."},
         {"name": "Adventurers Bow", "mult": 1.3, "rarity": "Common", "roll_needed": 40, "description": "An old, rotting bow left behind by an adventurer long past."}
@@ -295,6 +298,7 @@ elif chosen_class == "Archer":
 
 elif chosen_class == "Guardian":
     loot_table = [
+        {"name": "Indesctructable Shield", "mult": 5.0, "rarity": "Ultimate", "roll_needed": 999, "description": "Five times as heavy as a regular shield."},
         {"name": "Earth Golem Shield","mult": 2.5, "rarity": "Legendary", "roll_needed": 95, "description": "A massive, heavy shield made from the carapace of a legendary earth golem. It is said to be unbreakable."},
         {"name": "Old Mythril Shield", "mult": 1.6, "rarity": "Rare", "roll_needed": 70, "description": "An old, magic nullifying shield that is afterworn and has lost it's magical abilities, although still useful."},
         {"name": "Metal Shield", "mult": 1.3, "rarity": "Common", "roll_needed": 40, "description": "A trustworthy shield made by skilled dwarven blacksmiths."}
@@ -302,6 +306,7 @@ elif chosen_class == "Guardian":
 
 elif chosen_class == "All_Rounder":
     loot_table = [
+        {"name": "All-Powerful Wood Sword", "mult": 5.0, "rarity": "Ultimate", "toll_needed": 999, "description": "Powerful enough to attack as if it were five times."},
         {"name": "Sword of Equilibrium", "mult": 2.5, "rarity": "Legendary", "roll_needed": 95, "description": "A legendary blade that perfectly balances power and speed."},
         {"name": "Versatile Sword", "mult": 1.6, "rarity": "Rare", "roll_needed": 70, "description": "A finely crafted sword that adapts to the wielder's style."},
         {"name": "Balanced Blade", "mult": 1.3, "rarity": "Common", "roll_needed": 40, "description": "A well-rounded sword that is neither too heavy nor too light."}
@@ -309,6 +314,7 @@ elif chosen_class == "All_Rounder":
 
 elif chosen_class == "Leprechaun":
     loot_table = [
+        {"name": "Pot Of Gold", "mult": 5.0, "rarity": "Ultimate", "roll_needed": 999, "description": "Heavy enough to severely hurt the enemy, almost five times as normal."},
         {"name": "Four-Leaf Clover", "mult": 2.5, "rarity": "Legendary", "roll_needed": 95, "description": "A rare clover that is said to bring fortune and prosperity."},
         {"name": "Coin of Heads", "mult": 1.6, "rarity": "Rare", "roll_needed": 70, "description": "A coin with the symbol of a head, enchanted by royal, elven enchanters embued with luck."},
         {"name": "Coin of Tails", "mult": 1.3, "rarity": "Common", "roll_needed": 40, "description": "A coin that has the symbol of a tail on it, it brings good luck to its owner."}
@@ -316,10 +322,12 @@ elif chosen_class == "Leprechaun":
 
 elif chosen_class == "Priest":
     loot_table = [
+        {"name": "All-Powerful Tome", "mult": 5.0, "rarity": "Ultimate", "roll_needed": 999, "description": "A tome powerful enough to use five attacks at once."},
         {"name": "Godly Staff", "mult": 2.5, "rarity": "Legendary", "roll_needed": 95, "description": "A staff infused with holy healing magic from gods."},
         {"name": "Powerful Tome", "mult": 1.6, "rarity": "Rare", "roll_needed": 70, "description": "A tome imbued with holy magic from a powerful holy saint."},
-        {"name": "Unlimited Healing Flask", "mult": 1.3, "rarity": "Common", "roll_needed": 40, "description": "A potion which can replenish itself an unlimited amount of times."}
+        {"name": "Unlimited Healing Flask", "mult": 1.3, "rarity": "Common", "roll_needed": 40, "description": "A flask which can replenish itself an unlimited amount of times."}
     ]
+
 # -------------------------------------------------------
 # 4. ENEMY DATABASE
 # Each enemy has hp, max_hp, dodge chance, a weakness
@@ -451,10 +459,24 @@ while True:
         print(f"\n{YELLOW}========== TRADER =========={RESET}")
         print(f"  Gold: {YELLOW}{gold_coins}{RESET}")
         print(f"==========================================")
-        print(f"  1) Common Potion      - {GREEN}10 Gold{RESET}  | Restores 50 HP")
-        print(f"  2) Mega Potion        - {GREEN}25 Gold{RESET}  | Restores 150 HP")
-        print(f"  3) Mana Potion        - {GREEN}15 Gold{RESET}  | Restores 40 MP")
-        print(f"  4) Elixir             - {GREEN}40 Gold{RESET}  | Restores 100 HP and 50 MP")
+        print(f"  1) Common Potion             - {GREEN}10 Gold{RESET}  | Restores 50 HP")
+        print(f"  2) Mega Potion               - {GREEN}25 Gold{RESET}  | Restores 150 HP")
+        print(f"  3) Mana Potion               - {GREEN}15 Gold{RESET}  | Restores 40 MP")
+        print(f"  4) Elixir                    - {GREEN}40 Gold{RESET}  | Restores 100 HP and 50 MP")
+        if chosen_class == "Warrior":
+            print(f"  5) Sword For The Gods        - {GREEN}10,000 Gold{RESET}  | Attacks five times as heavy")
+        if chosen_class == "Mage":
+            print(f"  5) Heavenly Staff            - {GREEN}10,000 Gold{RESET}  | Attacks five times at once")
+        if chosen_class == "Archer":
+            print(f"  5) Ultimate Bow              - {GREEN}10,000 Gold{RESET}  | Shoots five times at once")
+        if chosen_class == "Guardian":
+            print(f"  5) Indestructible Shield     - {GREEN}10,000 Gold{RESET}  | Five times as heavy")
+        if chosen_class == "All-Rounder":
+            print(f"  5) All-Powerful Wood Sword   - {GREEN}10,000 Gold{RESET}  | Powerful enough to attack as if it were five times")
+        if chosen_class == "Leprechaun":
+            print(f"  5) Pot Of Gold               - {GREEN}10,000 Gold{RESET}  | Heavy enough to severely hurt the enemy, almost five times as normal")
+        if chosen_class == "Priest":
+            print(f"  5) All-Powerful Tome - {GREEN}10,000 Gold{RESET}  | A tome powerful enough to use five attacks at once")
         print(f"  B) Leave the trader")
         print(f"==========================================")
         trade_choice = input("Choose an item to buy: ").upper()
@@ -490,6 +512,63 @@ while True:
                 print(f"{GREEN} Bought an Elixir!{RESET} Remaining gold: {gold_coins}")
             else:
                 print(f"{RED} Not enough gold!{RESET}")
+
+        elif trade_choice == "5":
+            if chosen_class == "Warrior":
+                if gold_coins >= 10000:
+                    gold_coins -= 10000
+                    inventory.append("Sword For The Gods")
+                    print(f"{GREEN} Bought powerful sword!{RESET} Remaining gold: {gold_coins}")
+                else:
+                    print(f"{RED} Not enough gold!{RESET}")
+
+            if chosen_class == "Mage":
+                if gold_coins >= 10000:
+                    gold_coins -= 10000
+                    inventory.append("Heavenly Staff")
+                    print(f"{GREEN} Bought powerful staff!{RESET} Remaining gold: {gold_coins}")
+                else:
+                    print(f"{RED} Not enough gold!{RESET}")
+
+            if chosen_class == "Archer":
+                if gold_coins >= 10000:
+                    gold_coins -= 10000
+                    inventory.append("Ultimate Bow")
+                    print(f"{GREEN} Bought powerful bow!{RESET} Remaining gold: {gold_coins}")
+                else:
+                    print(f"{RED} Not enough gold!{RESET}")
+
+            if chosen_class == "Guardian":
+                if gold_coins >= 10000:
+                    gold_coins -= 10000
+                    inventory.append("Indestructible Shield")
+                    print(f"{GREEN} Bought powerful shield!{RESET} Remaining gold: {gold_coins}")
+                else:
+                    print(f"{RED} Not enough gold!{RESET}")
+
+            if chosen_class == "All-Rounder":
+                if gold_coins >= 10000:
+                    gold_coins -= 10000
+                    inventory.append("All-Powerful Wood Sword")
+                    print(f"{GREEN} Bought powerful wooden sword!{RESET} Remaining gold: {gold_coins}")
+                else:
+                    print(f"{RED} Not enough gold!{RESET}")
+
+            if chosen_class == "Leprechaun":
+                if gold_coins >= 10000:
+                    gold_coins -= 10000
+                    inventory.append("Pot Of Gold")
+                    print(f"{GREEN} Bought rich pot!{RESET} Remaining gold: {gold_coins}")
+                else:
+                    print(f"{RED} Not enough gold!{RESET}")
+
+            if chosen_class == "Priest":
+                if gold_coins >= 10000:
+                    gold_coins -= 10000
+                    inventory.append("All-Powerful Tome")
+                    print(f"{GREEN} Bought A powerful tome!{RESET} Remaining gold: {gold_coins}")
+                else:
+                    print(f"{RED} Not enough gold!{RESET}")
             
         elif trade_choice == "B":
             pass 
@@ -510,16 +589,16 @@ while True:
         continue
 
     elif action == "M":
-        if mage_affinity == "Healing":
-            # Healing affinity — cheaper cost and more HP restored
-            heal_cost = 8
-            heal_amount = 50 + (player_level * 8)
-            if current_mana >= heal_cost:
-                current_mana -= heal_cost
-                current_health = min(max_health, current_health + heal_amount)
-                print(f"{CYAN} Affinity heal! Restored {heal_amount} HP!{RESET}")
-            else:
-                print(f"{MAGENTA} Not enough mana!{RESET}")
+        if current_health <= max_health:
+            if mage_affinity == "Healing":    # Healing affinity — cheaper cost and more HP restored
+                heal_cost = 8
+                heal_amount = 50 + (player_level * 8)
+                if current_mana >= heal_cost:
+                    current_mana -= heal_cost
+                    current_health = min(max_health, current_health + heal_amount)
+                    print(f"{CYAN} Affinity heal! Restored {heal_amount} HP!{RESET}")
+                else:
+                    print(f"{MAGENTA} Not enough mana!{RESET}")
         else:
             # Normal heal for everyone else
             heal_cost = 15
