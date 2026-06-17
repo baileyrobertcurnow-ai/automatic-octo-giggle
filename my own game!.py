@@ -281,9 +281,9 @@ if chosen_class == "Warrior":
 
 elif chosen_class == "Mage":
     loot_table = [
-        {"name": "Wood Wand", "spell_mult": 1.3, "rarity": "Common", "roll_needed": 40, "description": "A lightweight, reliable standard-issue wand crafted by village carpentors and enchanters,"},
+        {"name": "Holy Staff", "spell_mult": 2.5, "rarity": "Legendary", "roll_needed": 95, "description": "A powerful, tall staff cut and enchanted by skilled, royal carpentors and enchanters."},
         {"name": "Enchanted Wand", "spell_mult": 1.6, "rarity": "Rare", "roll_needed": 70, "description": "A chiseled wand built by skilled dwarven carpentors and elven enchanters."},
-        {"name": "Holy Staff", "spell_mult": 2.5, "rarity": "Legendary", "roll_needed": 95, "description": "A powerful, tall staff cut and enchanted by skilled, royal carpentors and enchanters."}
+        {"name": "Wood Wand", "spell_mult": 1.3, "rarity": "Common", "roll_needed": 40, "description": "A lightweight, reliable standard-issue wand crafted by village carpentors and enchanters,"}
     ]
 
 elif chosen_class == "Archer":
@@ -295,30 +295,30 @@ elif chosen_class == "Archer":
 
 elif chosen_class == "Guardian":
     loot_table = [
-        {"name": "Metal Shield", "mult": 1.3, "rarity": "Common", "roll_needed": 40, "description": "A trustworthy shield made by skilled dwarven blacksmiths."},
+        {"name": "Earth Golem Shield","mult": 2.5, "rarity": "Legendary", "roll_needed": 95, "description": "A massive, heavy shield made from the carapace of a legendary earth golem. It is said to be unbreakable."},
         {"name": "Old Mythril Shield", "mult": 1.6, "rarity": "Rare", "roll_needed": 70, "description": "An old, magic nullifying shield that is afterworn and has lost it's magical abilities, although still useful."},
-        {"name": "Earth Golem Shield","mult": 2.5, "rarity": "Legendary", "roll_needed": 95, "description": "A massive, heavy shield made from the carapace of a legendary earth golem. It is said to be unbreakable."}
+        {"name": "Metal Shield", "mult": 1.3, "rarity": "Common", "roll_needed": 40, "description": "A trustworthy shield made by skilled dwarven blacksmiths."}
     ]
 
 elif chosen_class == "All_Rounder":
     loot_table = [
-        {"name": "Balanced Blade", "mult": 1.3, "rarity": "Common", "roll_needed": 40, "description": "A well-rounded sword that is neither too heavy nor too light."},
+        {"name": "Sword of Equilibrium", "mult": 2.5, "rarity": "Legendary", "roll_needed": 95, "description": "A legendary blade that perfectly balances power and speed."},
         {"name": "Versatile Sword", "mult": 1.6, "rarity": "Rare", "roll_needed": 70, "description": "A finely crafted sword that adapts to the wielder's style."},
-        {"name": "Sword of Equilibrium", "mult": 2.5, "rarity": "Legendary", "roll_needed": 95, "description": "A legendary blade that perfectly balances power and speed."}
+        {"name": "Balanced Blade", "mult": 1.3, "rarity": "Common", "roll_needed": 40, "description": "A well-rounded sword that is neither too heavy nor too light."}
     ]
 
 elif chosen_class == "Leprechaun":
     loot_table = [
-        {"name": "Coin of Tails", "mult": 1.3, "rarity": "Common", "roll_needed": 40, "description": "A coin that has the symbol of a tail on it, it brings good luck to its owner."},
+        {"name": "Four-Leaf Clover", "mult": 2.5, "rarity": "Legendary", "roll_needed": 95, "description": "A rare clover that is said to bring fortune and prosperity."},
         {"name": "Coin of Heads", "mult": 1.6, "rarity": "Rare", "roll_needed": 70, "description": "A coin with the symbol of a head, enchanted by royal, elven enchanters embued with luck."},
-        {"name": "Four-Leaf Clover", "mult": 2.5, "rarity": "Legendary", "roll_needed": 95, "description": "A rare clover that is said to bring fortune and prosperity."}
+        {"name": "Coin of Tails", "mult": 1.3, "rarity": "Common", "roll_needed": 40, "description": "A coin that has the symbol of a tail on it, it brings good luck to its owner."}
     ]
 
 elif chosen_class == "Priest":
     loot_table = [
-        {"name": "Unlimited Healing Potion", "mult": 1.3, "rarity": "Common", "roll_needed": 40, "description": "A potion which can replenish itself an unlimited amount of times."},
+        {"name": "Godly Staff", "mult": 2.5, "rarity": "Legendary", "roll_needed": 95, "description": "A staff infused with holy healing magic from gods."},
         {"name": "Powerful Tome", "mult": 1.6, "rarity": "Rare", "roll_needed": 70, "description": "A tome imbued with holy magic from a powerful holy saint."},
-        {"name": "Godly Staff", "mult": 2.5, "rarity": "Legendary", "roll_needed": 95, "description": "A staff infused with holy healing magic from gods."}
+        {"name": "Unlimited Healing Potion", "mult": 1.3, "rarity": "Common", "roll_needed": 40, "description": "A potion which can replenish itself an unlimited amount of times."}
     ]
 # -------------------------------------------------------
 # 4. ENEMY DATABASE
