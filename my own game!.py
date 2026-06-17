@@ -272,12 +272,48 @@ if save_data is None:
 # roll_needed is compared against the player's luck roll
 # after each victory to decide if the item drops.
 # -------------------------------------------------------
-loot_table = [
-    {"name": "Godly Greatsword", "mult": 2.5, "rarity": "Legendary", "roll_needed": 95, "description": "A massive golden blade vibrating with celestial energy. It obliterates foes."},
-    {"name": "Sharp Cutlass", "mult": 1.6, "rarity": "Rare", "roll_needed": 70, "description": "A curved pirate blade built for swift, slicing slashes."},
-    {"name": "Iron Sword", "mult": 1.3, "rarity": "Common", "roll_needed": 40, "description": "A heavy, reliable standard-issue sword forged by village blacksmiths."}
-]
+if chosen_class == "Warrior":
+    loot_table = [
+        {"name": "Godly Greatsword", "mult": 2.5, "rarity": "Legendary", "roll_needed": 95, "description": "A massive golden blade vibrating with celestial energy. It obliterates foes."},
+        {"name": "Sharp Cutlass", "mult": 1.6, "rarity": "Rare", "roll_needed": 70, "description": "A curved pirate blade built for swift, slicing slashes."},
+        {"name": "Iron Sword", "mult": 1.3, "rarity": "Common", "roll_needed": 40, "description": "A heavy, reliable standard-issue sword forged by village blacksmiths."}
+    ]
 
+elif chosen_class == "Mage":
+    loot_table = [
+        {"name": "Wood Wand", "spell_mult": 1.3, "rarity": "Common", "roll_needed": 40, "description": "A lightweight, reliable standard-issue wand crafted by village carpentors and enchanters,"},
+        {"name": "Enchanted Wand", "spell_mult": 1.6, "rarity": "Rare", "roll_needed": 70, "description": "A chiseled wand built by skilled dwarven carpentors and elven enchanters."},
+        {"name": "Holy Staff", "spell_mult": 2.5, "rarity": "Legendary", "roll_needed": 95, "description": "A powerful, tall staff cut and enchanted by skilled, royal carpentors and enchanters."}
+    ]
+
+elif chosen_class == "Archer":
+    loot_table = [  
+        {"name": "Light-Speed Crossbow", "mult": 2.5, "rarity": "Legendary", "roll_needed": 95, "description": "A small, light-weight, fast shooting crossbow fit for gods."},
+        {"name": "Enchanted Bow", "mult": 1.6, "rarity": "Rare", "roll_needed": 70, "description": "A big, enchanted bow made by powerful enchanters."},
+        {"name": "Adventurers Bow", "mult": 1.3, "rarity": "Common", "roll_needed": 40, "description": "An old, rotting bow left behind by an adventurer long past."}
+        ]
+
+elif chosen_class == "All-Rounder":
+    loot_table = [
+        {"name": "Metal Shield", "mult": 1.3, "rarity": "Common", "roll_needed": 40, "description": "A trustworthy shield made by skilled dwarven blacksmiths."},
+        {"name": "Old Mythril Shield", "mult": 1.6, "rarity": "Rare", "roll_needed": 70, "description": "An old, magic nullifying shield that is afterworn and has lost it's magical abilities, although still useful."},
+        {"name": "Earth Golem Shield","mult": 2.5, "rarity": "Legendary", "roll_needed": 95, "description": ""}
+    ]
+
+elif chosen_class == "Guardian":
+    loot_table = [
+
+    ]
+
+elif chosen_class == "Leprechaun":
+    loot_table = [
+
+    ]
+
+elif chosen_class == "Priest":
+    loot_table = [
+
+    ]
 # -------------------------------------------------------
 # 4. ENEMY DATABASE
 # Each enemy has hp, max_hp, dodge chance, a weakness
@@ -310,7 +346,7 @@ enemies_pool = [
     {"name": "Giant Ant",             "hp": 90,  "max_hp": 90,  "dodge": 40, "weakness": "Water",     "resist": "Earth",  "dmg_mult": 1.15},
     {"name": "Worker Ant",            "hp": 75,  "max_hp": 75,  "dodge": 80, "weakness": "Water",     "resist": "Earth",  "dmg_mult": 1.15},
     {"name": "Soldier Ant",           "hp": 100, "max_hp": 100, "dodge": 60, "weakness": "Water",     "resist": "Earth",  "dmg_mult": 1.30},
-    {"name": "Grim Reaper",           "hp": 120, "max_hp": 100, "dodge": 15, "weakness": "",          "resist": "Physical/Earth/Fire", "dmg_mult": 1.50}
+    {"name": "Grim Reaper",           "hp": 120, "max_hp": 120, "dodge": 15, "weakness": "",          "resist": "Physical/Earth/Fire", "dmg_mult": 1.50}
 ]
 elder_dragon_boss = {
     "name": "Elder Dragon (The Endgame Myth)",
