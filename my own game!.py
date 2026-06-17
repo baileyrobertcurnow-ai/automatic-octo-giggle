@@ -281,9 +281,9 @@ if chosen_class == "Warrior":
 
 elif chosen_class == "Mage":
     loot_table = [
-        {"name": "Holy Staff", "spell_mult": 2.5, "rarity": "Legendary", "roll_needed": 95, "description": "A powerful, tall staff cut and enchanted by skilled, royal carpentors and enchanters."},
-        {"name": "Enchanted Wand", "spell_mult": 1.6, "rarity": "Rare", "roll_needed": 70, "description": "A chiseled wand built by skilled dwarven carpentors and elven enchanters."},
-        {"name": "Wood Wand", "spell_mult": 1.3, "rarity": "Common", "roll_needed": 40, "description": "A lightweight, reliable standard-issue wand crafted by village carpentors and enchanters,"}
+        {"name": "Holy Staff", "mult": 2.5, "rarity": "Legendary", "roll_needed": 95, "description": "A powerful, tall staff cut and enchanted by skilled, royal carpentors and enchanters."},
+        {"name": "Enchanted Wand", "mult": 1.6, "rarity": "Rare", "roll_needed": 70, "description": "A chiseled wand built by skilled dwarven carpentors and elven enchanters."},
+        {"name": "Wood Wand", "mult": 1.3, "rarity": "Common", "roll_needed": 40, "description": "A lightweight, reliable standard-issue wand crafted by village carpentors and enchanters,"}
     ]
 
 elif chosen_class == "Archer":
@@ -318,7 +318,7 @@ elif chosen_class == "Priest":
     loot_table = [
         {"name": "Godly Staff", "mult": 2.5, "rarity": "Legendary", "roll_needed": 95, "description": "A staff infused with holy healing magic from gods."},
         {"name": "Powerful Tome", "mult": 1.6, "rarity": "Rare", "roll_needed": 70, "description": "A tome imbued with holy magic from a powerful holy saint."},
-        {"name": "Unlimited Healing Potion", "mult": 1.3, "rarity": "Common", "roll_needed": 40, "description": "A potion which can replenish itself an unlimited amount of times."}
+        {"name": "Unlimited Healing Flask", "mult": 1.3, "rarity": "Common", "roll_needed": 40, "description": "A potion which can replenish itself an unlimited amount of times."}
     ]
 # -------------------------------------------------------
 # 4. ENEMY DATABASE
@@ -408,7 +408,7 @@ while True:
     print(f"  {MAGENTA}{current_enemy['name']}{RESET}: {get_health_bar(current_enemy['hp'], current_enemy['max_hp'])} ({current_enemy['hp']}/{current_enemy['max_hp']})")
     print(f"==========================================")
     print("A=Strike | F=Fire | W=Water | V=Wind | E=Earth | M=Heal | R=Rest")
-    print("I=Inventory | S=Save | C=Clear | Q=Quit | B=Statistics")
+    print("I=Inventory | S=Save | C=Clear | Q=Quit | B=Statistics | T=Trader")
 
     action = input("Choose action: ").upper()
 
@@ -445,6 +445,57 @@ while True:
         print(f"  Monsters defeated: {RED}{number_of_defeated_mobs}")
         print(f"{CYAN}================================{RESET}")
         input("Press Enter to continue...")
+        continue
+
+    elif action == "T":
+        print(f"\n{YELLOW}========== TRADER =========={RESET}")
+        print(f"  Gold: {YELLOW}{gold_coins}{RESET}")
+        print(f"==========================================")
+        print(f"  1) Common Potion      - {GREEN}10 Gold{RESET}  | Restores 50 HP")
+        print(f"  2) Mega Potion        - {GREEN}25 Gold{RESET}  | Restores 150 HP")
+        print(f"  3) Mana Potion        - {GREEN}15 Gold{RESET}  | Restores 40 MP")
+        print(f"  4) Elixir             - {GREEN}40 Gold{RESET}  | Restores 100 HP and 50 MP")
+        print(f"  B) Leave the trader")
+        print(f"==========================================")
+        trade_choice = input("Choose an item to buy: ").upper()
+
+        if trade_choice == "1":
+            if gold_coins >= 10:
+                gold_coins -= 10
+                inventory.append("Common Potion")
+                print(f"{GREEN} Bought a Common Potion!{RESET} Remaining gold: {gold_coins}")
+            else:
+                print(f"{RED} Not enough gold!{RESET}")
+
+        elif trade_choice == "2":
+            if gold_coins >= 25:
+                gold_coins -= 25
+                inventory.append("Mega Potion")
+                print(f"{GREEN} Bought a Mega Potion!{RESET} Remaining gold: {gold_coins}")
+            else:
+                print(f"{RED} Not enough gold!{RESET}")
+
+        elif trade_choice == "3":
+            if gold_coins >= 15:
+                gold_coins -= 15
+                inventory.append("Mana Potion")
+                print(f"{GREEN} Bought a Mana Potion!{RESET} Remaining gold: {gold_coins}")
+            else:
+                print(f"{RED} Not enough gold!{RESET}")
+
+        elif trade_choice == "4":
+            if gold_coins >= 40:
+                gold_coins -= 40
+                inventory.append("Elixir")
+                print(f"{GREEN} Bought an Elixir!{RESET} Remaining gold: {gold_coins}")
+            else:
+                print(f"{RED} Not enough gold!{RESET}")
+            
+        elif trade_choice == "B":
+            pass 
+
+        else:
+            print(" Invalid choice!")
         continue
 
     elif action == "C":
@@ -494,13 +545,37 @@ while True:
         try:
             chosen_index = int(item_choice) - 1
             selected_item = inventory[chosen_index]
-            if "Potion" in selected_item:
-                print(f"\n[INSPECT: {selected_item}] -> Restores 50 HP when used.")
-                confirm = input("Type 'USE' to drink it, or press Enter to go back: ").upper()
-                if confirm == "USE":
-                    current_health = min(max_health, current_health + 50)
-                    inventory.pop(chosen_index)
-                    print(f" Drank {selected_item}! Restored 50 HP.")
+            if "Potion" in selected_item or selected_item == "Elixir":
+                if selected_item == "Mega Potion":
+                    print(f"\n[INSPECT: {selected_item}] -> Restores 150 HP when used.")
+                    confirm = input("Type 'USE' to drink it, or press Enter to go back: ").upper()
+                    if confirm == "USE":
+                        current_health = min(max_health, current_health + 150)
+                        inventory.pop(chosen_index)
+                        print(f" Drank {selected_item}! Restored 150 HP.")
+                elif selected_item == "Mana Potion":
+                    print(f"\n[INSPECT: {selected_item}] -> Restores 40 MP when used.")
+                    confirm = input("Type 'USE' to drink it, or press Enter to go back: ").upper()
+                    if confirm == "USE":
+                        current_mana = min(max_mana, current_mana + 40)
+                        inventory.pop(chosen_index)
+                        print(f" Drank {selected_item}! Restored 40 MP.")
+                elif selected_item == "Elixir":
+                    print(f"\n[INSPECT: {selected_item}] -> Restores 100 HP and 50 MP when used.")
+                    confirm = input("Type 'USE' to drink it, or press Enter to go back: ").upper()
+                    if confirm == "USE":
+                        current_health = min(max_health, current_health + 100)
+                        current_mana = min(max_mana, current_mana + 50)
+                        inventory.pop(chosen_index)
+                        print(f" Drank {selected_item}! Restored 100 HP and 50 MP.")
+                else:
+                    # Common Potion fallback
+                    print(f"\n[INSPECT: {selected_item}] -> Restores 50 HP when used.")
+                    confirm = input("Type 'USE' to drink it, or press Enter to go back: ").upper()
+                    if confirm == "USE":
+                        current_health = min(max_health, current_health + 50)
+                        inventory.pop(chosen_index)
+                        print(f" Drank {selected_item}! Restored 50 HP.")
             else:
                 for weapon in loot_table:
                     if weapon["name"] == selected_item:
