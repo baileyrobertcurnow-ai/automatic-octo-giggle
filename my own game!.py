@@ -463,19 +463,19 @@ while True:
         print(f"  2) Mega Potion               - {GREEN}25 Gold{RESET}  | Restores 150 HP")
         print(f"  3) Mana Potion               - {GREEN}15 Gold{RESET}  | Restores 40 MP")
         print(f"  4) Elixir                    - {GREEN}40 Gold{RESET}  | Restores 100 HP and 50 MP")
-        if chosen_class == "Warrior":
+        if chosen_class == "Warrior" and player_level >= 10:
             print(f"  5) Sword For The Gods        - {GREEN}10,000 Gold{RESET}  | Attacks five times as heavy")
-        if chosen_class == "Mage":
+        if chosen_class == "Mage" and player_level >= 10:
             print(f"  5) Heavenly Staff            - {GREEN}10,000 Gold{RESET}  | Attacks five times at once")
-        if chosen_class == "Archer":
+        if chosen_class == "Archer" and player_level >= 10:
             print(f"  5) Ultimate Bow              - {GREEN}10,000 Gold{RESET}  | Shoots five times at once")
-        if chosen_class == "Guardian":
+        if chosen_class == "Guardian" and player_level >= 10:
             print(f"  5) Indestructible Shield     - {GREEN}10,000 Gold{RESET}  | Five times as heavy")
-        if chosen_class == "All-Rounder":
+        if chosen_class == "All-Rounder" and player_level >= 10:
             print(f"  5) All-Powerful Wood Sword   - {GREEN}10,000 Gold{RESET}  | Powerful enough to attack as if it were five times")
-        if chosen_class == "Leprechaun":
+        if chosen_class == "Leprechaun" and player_level >= 10:
             print(f"  5) Pot Of Gold               - {GREEN}10,000 Gold{RESET}  | Heavy enough to severely hurt the enemy, almost five times as normal")
-        if chosen_class == "Priest":
+        if chosen_class == "Priest" and player_level >= 10:
             print(f"  5) All-Powerful Tome - {GREEN}10,000 Gold{RESET}  | A tome powerful enough to use five attacks at once")
         print(f"  B) Leave the trader")
         print(f"==========================================")
@@ -589,7 +589,7 @@ while True:
         continue
 
     elif action == "M":
-        if current_health <= max_health:
+        if current_health <= max_health - 1:
             if mage_affinity == "Healing":
                 # Healing affinity — cheaper cost and more HP restored
                 heal_cost = 8
@@ -598,6 +598,10 @@ while True:
                     current_mana -= heal_cost
                     current_health = min(max_health, current_health + heal_amount)
                     print(f"{CYAN} Affinity heal! Restored {heal_amount} HP!{RESET}")
+                    counter_attack_bob = random.randint(20, 50)
+                    counter_attack_bob_2 = counter_attack_bob - defence_stat
+                    current_health -=  counter_attack_bob_2 
+                    print(f"{RED} Enemy counterattacks with {counter_attack_bob_2} damage while you heal!{RESET}")
                 else:
                     print(f"{MAGENTA} Not enough mana!{RESET}")
             else:
@@ -608,6 +612,10 @@ while True:
                     current_mana -= heal_cost
                     current_health = min(max_health, current_health + heal_amount)
                     print(f" Restored {heal_amount} HP using magic!")
+                    counter_attack_bob = random.randint(20, 50)
+                    counter_attack_bob_2 = counter_attack_bob - defence_stat
+                    current_health -=  counter_attack_bob_2
+                    print(f"{RED} Enemy counterattacks with {counter_attack_bob_2} damage while you heal!{RESET}")
                 else:
                     print(f"{MAGENTA} Out of Mana!{RESET}")
             continue
