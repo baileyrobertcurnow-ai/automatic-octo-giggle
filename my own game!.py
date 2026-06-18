@@ -428,7 +428,8 @@ while True:
     elif action == "S":
         save_game(profile_name)
         continue
-
+    if current_health >= max_health:
+        current_health = max_health  # Prevent overheal
     elif action == "B":
         print(f"\n{CYAN}========== STATISTICS =========={RESET}")
         print(f"  Name:       {YELLOW}{player_name}{RESET}")
@@ -583,8 +584,8 @@ while True:
         continue
 
     elif action == "R":
-        print(f"\n You take a long rest...")
-        current_mana = min(max_mana, current_mana + 20 + (player_level * 3))
+        print("You take a long rest...")
+        current_mana = min(current_mana + 20 + (player_level * 3))
         print(f" MP Restored!")
         continue
 
@@ -598,7 +599,7 @@ while True:
                     current_mana -= heal_cost
                     current_health = min(max_health, current_health + heal_amount)
                     print(f"{CYAN} Affinity heal! Restored {heal_amount} HP!{RESET}")
-                    counter_attack_bob = random.randint(20, 50)
+                    counter_attack_bob = random.randint(10, 40)
                     counter_attack_bob_2 = counter_attack_bob - defence_stat
                     current_health -=  counter_attack_bob_2 
                     print(f"{RED} Enemy counterattacks with {counter_attack_bob_2} damage while you heal!{RESET}")
@@ -612,13 +613,14 @@ while True:
                     current_mana -= heal_cost
                     current_health = min(max_health, current_health + heal_amount)
                     print(f" Restored {heal_amount} HP using magic!")
-                    counter_attack_bob = random.randint(20, 50)
+                    counter_attack_bob = random.randint(10, 40)
                     counter_attack_bob_2 = counter_attack_bob - defence_stat
                     current_health -=  counter_attack_bob_2
                     print(f"{RED} Enemy counterattacks with {counter_attack_bob_2} damage while you heal!{RESET}")
                 else:
                     print(f"{MAGENTA} Out of Mana!{RESET}")
             continue
+    
 
     elif action == "I":
         print(f"\n--- YOUR INVENTORY ---")
