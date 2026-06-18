@@ -590,7 +590,8 @@ while True:
 
     elif action == "M":
         if current_health <= max_health:
-            if mage_affinity == "Healing":    # Healing affinity — cheaper cost and more HP restored
+            if mage_affinity == "Healing":
+                # Healing affinity — cheaper cost and more HP restored
                 heal_cost = 8
                 heal_amount = 50 + (player_level * 8)
                 if current_mana >= heal_cost:
@@ -599,17 +600,17 @@ while True:
                     print(f"{CYAN} Affinity heal! Restored {heal_amount} HP!{RESET}")
                 else:
                     print(f"{MAGENTA} Not enough mana!{RESET}")
-        else:
-            # Normal heal for everyone else
-            heal_cost = 15
-            heal_amount = 30 + (player_level * 5)
-            if current_mana >= heal_cost:
-                current_mana -= heal_cost
-                current_health = min(max_health, current_health + heal_amount)
-                print(f" Restored {heal_amount} HP using magic!")
             else:
-                print(f"{MAGENTA} Out of Mana!{RESET}")
-        continue
+                # Normal heal for everyone else
+                heal_cost = 15
+                heal_amount = 30 + (player_level * 5)
+                if current_mana >= heal_cost:
+                    current_mana -= heal_cost
+                    current_health = min(max_health, current_health + heal_amount)
+                    print(f" Restored {heal_amount} HP using magic!")
+                else:
+                    print(f"{MAGENTA} Out of Mana!{RESET}")
+            continue
 
     elif action == "I":
         print(f"\n--- YOUR INVENTORY ---")
@@ -817,6 +818,7 @@ while True:
 
         earned_xp = random.randint(40, 70)
         earned_gold = random.randint(15, 30)
+        earned_gold == int(earned_gold + luck_stat * 0.2)  # Luck gives a small bonus to gold earned
         number_of_defeated_mobs += 1
         xp += earned_xp
         gold_coins += earned_gold
